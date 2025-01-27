@@ -1,0 +1,12 @@
+.custom-navbar {
+    background-color: #FF7043; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: white; 
+    padding: 1rem; 
+    text-align: center; 
+}
+
+.custom-navbar .navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem; 
+}
