@@ -11,7 +11,7 @@ import QuizList from './components/QuizList';
 import './App.css';
 
 function App() {
-  const [role, setRole] = useState(null); // Rolul utilizatorului: "student" sau "profesor"
+  const [role, setRole] = useState(null); 
 
   const handleLogin = (userRole) => {
     setRole(userRole);

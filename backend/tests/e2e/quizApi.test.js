@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'; // Importă Playwright
+import { test, expect } from '@playwright/test'; 
 
 // Test pentru recuperarea unui quiz după ID
 test.describe('Quiz API - GET /api/quizzes/:id', () => {
@@ -16,17 +16,16 @@ test.describe('Quiz API - GET /api/quizzes/:id', () => {
       ]
     };
 
-    // Creăm un quiz pentru a-l folosi în test
     const res = await request.post('http://localhost:5000/api/quizzes', {
       data: quizData
     });
     const body = await res.json();
-    quizId = body._id; // Salvăm ID-ul quiz-ului creat
+    quizId = body._id; 
   });
 
   test('should retrieve the quiz by ID', async ({ request }) => {
     const res = await request.get(`http://localhost:5000/api/quizzes/${quizId}`);
-    expect(res.status()).toBe(200); // Verificăm că statusul este 200 (OK)
+    expect(res.status()).toBe(200);
 
     const body = await res.json();
     expect(body).toHaveProperty('_id', quizId);
