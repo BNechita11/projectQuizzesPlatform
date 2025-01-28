@@ -33,3 +33,4 @@ test.describe('Quiz API - GET /api/quizzes/:id', () => {
     expect(body).toHaveProperty('title', 'Geography Quiz');
   });
 });
+//pt testare :  npx playwright test tests/e2e/quizApi.test.js

@@ -1,91 +1,85 @@
-// import { expect } from 'chai';
-// import mongoose from 'mongoose';
-// import request from 'supertest';
-// import User from '../../models/User.js';
-// import Quiz from '../../models/quiz.js';
-// import Score from '../../models/score.js';
+// const request = require('supertest');
+// const app = require('../app'); // Importa aplicația ta principală Express
+// const mongoose = require('mongoose');
+// const User = require('../models/User');
+// const Quiz = require('../models/quiz');
+// const Score = require('../models/score');
 
-// describe('Integration Test for Quiz and Scoring', () => {
-//   let userToken, quizId;
+// const TEST_DB_URI = 'mongodb://127.0.0.1:27017/quiz-platformdb';
 
-//   before(async () => {
-//     // Conectează-te la baza de date
-//     if (mongoose.connection.readyState === 0) {
-//       await mongoose.connect('mongodb://localhost/myDatabase'); // Folosește baza principală
-//     }
+// beforeAll(async () => {
+//   await mongoose.connect(TEST_DB_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   });
+// });
 
-//     // Pornește serverul
-//     startServer();
+// afterAll(async () => {
+//   await mongoose.connection.close(); // Nu ștergem baza de date după teste
+// });
 
-//     // Creează un utilizator de test (temporar)
-//     const userResponse = await request(app)
+// describe('Integration Tests', () => {
+//   let token;
+
+//   it('should register a user and log in', async () => {
+//     // Înregistrare
+//     const registerResponse = await request(app)
 //       .post('/api/auth/register')
-//       .send({
-//         username: 'test_testuser', // Prefix test pentru identificare
-//         password: 'testpassword',
-//         role: 'student',
-//       });
+//       .send({ username: 'testuser', password: 'password123', role: 'student' });
 
+//     expect(registerResponse.status).toBe(201);
+//     expect(registerResponse.body.message).toBe('Utilizator creat cu succes!');
+
+//     // Autentificare
 //     const loginResponse = await request(app)
 //       .post('/api/auth/login')
-//       .send({
-//         username: 'test_testuser',
-//         password: 'testpassword',
-//       });
+//       .send({ username: 'testuser', password: 'password123' });
 
-//     userToken = loginResponse.body.token;
+//     expect(loginResponse.status).toBe(200);
+//     expect(loginResponse.body.token).toBeDefined();
 
-//     // Creează un quiz de test (temporar)
+//     token = loginResponse.body.token; // Salvează tokenul pentru teste ulterioare
+//   });
+
+//   it('should create a quiz and save a score', async () => {
+//     // Creare quiz
+//     const quizData = {
+//       title: 'Test Quiz',
+//       questions: [
+//         {
+//           question: 'Care este capitala României?',
+//           options: ['București', 'Cluj', 'Iași'],
+//           correctAnswer: 'București',
+//         },
+//       ],
+//     };
+
 //     const quizResponse = await request(app)
 //       .post('/api/quizzes')
-//       .set('Authorization', `Bearer ${userToken}`)
-//       .send({
-//         title: 'Test Quiz for Integration',
-//         questions: [
-//           {
-//             question: 'Ce este 3+3?',
-//             options: ['5', '6', '7', '8'],
-//             correctAnswer: '6',
-//           },
-//         ],
-//       });
+//       .set('Authorization', `Bearer ${token}`)
+//       .send(quizData);
 
-//     quizId = quizResponse.body._id;
-//   });
+//     expect(quizResponse.status).toBe(201);
+//     expect(quizResponse.body.title).toBe('Test Quiz');
 
-//   it('should create a quiz and verify it exists', async () => {
-//     const quiz = await Quiz.findById(quizId);
-//     expect(quiz).to.exist;
-//     expect(quiz.title).to.equal('Test Quiz for Integration');
-//   });
+//     const quizId = quizResponse.body._id; // Obține ID-ul quiz-ului creat
 
-//   it('should allow submitting a score', async () => {
+//     // Salvare scor
+//     const scoreData = {
+//       username: 'testuser',
+//       quizId: quizId,
+//       quizTitle: 'Test Quiz',
+//       points: 10,
+//       timeTaken: 120,
+//     };
+
 //     const scoreResponse = await request(app)
 //       .post('/api/scores')
-//       .set('Authorization', `Bearer ${userToken}`)
-//       .send({
-//         username: 'test_testuser',
-//         quizId,
-//         quizTitle: 'Test Quiz for Integration',
-//         points: 15,
-//         timeTaken: 45,
-//       });
+//       .set('Authorization', `Bearer ${token}`)
+//       .send(scoreData);
 
-//     expect(scoreResponse.status).to.equal(201);
-//     expect(scoreResponse.body.username).to.equal('test_testuser');
-//     expect(scoreResponse.body.points).to.equal(15);
-
-//     // Verifică dacă scorul există în baza de date
-//     const score = await Score.findOne({ username: 'test_testuser' });
-//     expect(score).to.exist;
-//     expect(score.points).to.equal(15);
-//   });
-
-//   after(async () => {
-//     // Șterge doar datele temporare (utilizatori și quiz-uri create în test)
-//     await User.deleteMany({ username: /^test_/ }); // Șterge doar utilizatorii de test
-//     await Quiz.deleteMany({ title: /^Test Quiz/ }); // Șterge doar quiz-urile de test
-//     await Score.deleteMany({ username: /^test_/ }); // Șterge doar scorurile de test
-//     await mongoose.connection.close();
+//     expect(scoreResponse.status).toBe(201);
+//     expect(scoreResponse.body.points).toBe(10);
+//     expect(scoreResponse.body.timeTaken).toBe(120);
 //   });
 // });
