@@ -46,7 +46,7 @@ The app leverages modern web development technologies for both backend and front
 - **Context API**: Manages state across the application for quizzes.
 
 ### Architectural Diagram
-(Placeholder for architectural diagram image)
+![image](https://github.com/user-attachments/assets/aeda1e56-c6f9-41be-b26e-cb551c2a8e1a)
 
 ### Backend Setup
 #### Prerequisites
