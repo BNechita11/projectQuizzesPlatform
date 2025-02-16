@@ -1,5 +1,5 @@
 ### Description
-Welcome to Quiz Educațional! This project was built to provide an interactive platform for educational quizzes. Users can log in as students or professors, allowing students to complete quizzes and track their progress, while professors can create, manage, and analyze quizzes.
+Welcome to Educational Quiz! This project was built to provide an interactive platform for educational quizzes. Users can log in as students or professors, allowing students to complete quizzes and track their progress, while professors can create, manage, and analyze quizzes.
 
 ### Functional Specifications
 The app features two primary dashboards: one for students and one for professors. It includes the following pages:
